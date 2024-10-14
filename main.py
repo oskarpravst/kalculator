@@ -1,18 +1,36 @@
-import tkinter
-from tkinter import *
-
-m = tkinter.Tk()
-m.geometry("800x800") # window size
+import pygame
+from pygame import *
 
 
-x = 4
-text = tkinter.Text(height=2, width=30)
-text.insert(tkinter.END, x)
-text.place(x=100, y=20)
+pygame.init()
+back = (46, 46, 46)
+gameDisplay = pygame.display.set_mode((800,600))
+pygame.display.set_caption('Kalculator')
+gameDisplay.fill(back)
+clock = pygame.time.Clock()
+running = True
 
-# button1 = Button(text="Click me!")
-# button1.place(x=100, y=20)
+charater_img = pygame.image.load("nurek.png")
 
+def charater(x, y):
+    gameDisplay.blit(charater_img, (x, y))
 
+x = 100
+y = 400
 
-m.mainloop()
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    pygame.display.update()
+    clock.tick(60)
+    charater(x, y)
+    x += 1
+    
+    
+    
+    
+
+pygame.quit()
+quit()
+            
