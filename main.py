@@ -10,6 +10,7 @@ clock = pygame.time.Clock()
 # IMAGES
 character_img = pygame.image.load("nurek.png")
 spike_img = pygame.image.load("Spike_Pixel.png")
+floor_img = pygame.image.load("tileplanks.png")
 
 # FUNCTIONS
 def character(x, y):
@@ -18,12 +19,17 @@ def character(x, y):
 def spike(x1, y1):
     gameDisplay.blit(spike_img, (x1, y1))
 
+def floor(x2, y2):
+    gameDisplay.blit(floor_img, (x2, y2))
+
 # VARIABLES
 running = True
 x = 100
 y = 400
 x1 = 800
 y1 = 390
+y2 = 0
+x2 = 50
 ground_y = 400
 
 back = (46, 46, 46)
@@ -35,8 +41,10 @@ jump_strength = 10 # Set a fixed jump strength
 while running:
     gameDisplay.fill(back)
     
+    floor(x2, y2)
     character(x, y)
     spike(x1, y1)
+    
     x1 -= 5
     if x1 < 0:
         x1 = 800
