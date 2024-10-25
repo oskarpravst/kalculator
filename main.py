@@ -9,27 +9,37 @@ clock = pygame.time.Clock()
 
 # IMAGES
 character_img = pygame.image.load("nurek.png")
+spike_img = pygame.image.load("Spike_Pixel.png")
 
 # FUNCTIONS
 def character(x, y):
     gameDisplay.blit(character_img, (x, y))
 
+def spike(x1, y1):
+    gameDisplay.blit(spike_img, (x1, y1))
+
 # VARIABLES
 running = True
 x = 100
 y = 400
+x1 = 800
+y1 = 390
 ground_y = 400
 
 back = (46, 46, 46)
 
 jumping = False
 velocity = 0
-jump_strength = 15  # Set a fixed jump strength
+jump_strength = 10 # Set a fixed jump strength
 
 while running:
     gameDisplay.fill(back)
     
     character(x, y)
+    spike(x1, y1)
+    x1 -= 5
+    if x1 < 0:
+        x1 = 800
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
