@@ -1,4 +1,5 @@
 import pygame
+import random
 from pygame import *
 
 # SETUP
@@ -13,15 +14,21 @@ spike_img = pygame.image.load("Spike_Pixel.png")
 floor_img = pygame.image.load("tileplanks.png")
 
 # FUNCTIONS
-def character(x, y):
-    gameDisplay.blit(character_img, (x, y))
+def character(charater_x, charater_y):
+    gameDisplay.blit(character_img, (charater_x, charater_y))
 
-def spike(x1, y1):
-    gameDisplay.blit(spike_img, (x1, y1))
-    gameDisplay.blit(spike_img, (x1+30, y1))
+def spike(spike_x, spike_y):
+    gameDisplay.blit(spike_img, (spike_x, spike_y))
+    gameDisplay.blit(spike_img, (spike_x+30, spike_y))
 
-def floor(x2, y2):
-    gameDisplay.blit(floor_img, (x2, y2))
+
+
+def floor(floor_x, floor_y, floor_level):
+    gameDisplay.blit(floor_img, (floor_x, floor_y))
+    for i in range(8):
+        gameDisplay.blit(floor_img, (floor_x, floor_y + floor_level))
+        floor_level+=16
+
 
         
 
@@ -34,13 +41,17 @@ spike_mask = pygame.mask.from_surface(spike_img)
 
 # VARIABLES
 running = True
-x = 100
-y = 150
-x1 = 1000
-y1 = 140
-y2 = 172
-x2 = 1
+charater_x = 100
+charater_y = 150
+spike_x = 1000
+spike_y = 140
+floor_y = 172
+floor_x = 0
 ground_y = 150
+floor_level = 0
+random_spawn_spike = random.randint(0, 2)
+spike_speed = random.randint(6, 12)
+
 
 back = (46, 46, 46)
 
@@ -50,21 +61,26 @@ jump_strength = 10 # Set a fixed jump strength
 
 while running:
     gameDisplay.fill(back)
-    floor(x2, y2)
-    character(x, y)
+    floor(floor_x, floor_y, floor_level)
+    character(charater_x, charater_y)
     
-    spike(x1, y1)
+    spike(spike_x, spike_y)
     # gameDisplay.blit(mask_img, (100, 150))
 
-    if character_mask.overlap(spike_mask, (x1 - x, y1 - y)): # subtract coordinates of the spike and the charater
+    if character_mask.overlap(spike_mask, (spike_x - charater_x, spike_y - charater_y)): # subtract coordinates of the spike and the charater
         print("dead")
         
     
     
+    spike_x -= spike_speed
+    if spike_x < 0:
+        spike_speed = random.randint(6, 12)
+        spike_x = 1000
     
-    x1 -= 7
-    if x1 < 0:
-        x1 = 1000
+    if 450 < spike_x < 462:
+        spike(1000, 140)
+
+        
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -78,12 +94,12 @@ while running:
             velocity = jump_strength  # Set the initial jump velocity
     
     if jumping:
-        y -= velocity  # Move the character up
+        charater_y -= velocity  # Move the character up
         velocity -= 1  # Decrease the velocity
 
         # If the character has fallen back to the ground
-        if y >= ground_y:
-            y = ground_y  # Reset to ground level
+        if charater_y >= ground_y:
+            charater_y = ground_y  # Reset to ground level
             jumping = False  # Reset jumping state
             velocity = 0  # Reset velocity
 
