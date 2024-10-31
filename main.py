@@ -22,12 +22,18 @@ def spike(spike_x, spike_y):
     gameDisplay.blit(spike_img, (spike_x+30, spike_y))
 
 
-
 def floor(floor_x, floor_y, floor_level):
     gameDisplay.blit(floor_img, (floor_x, floor_y))
     for i in range(8):
         gameDisplay.blit(floor_img, (floor_x, floor_y + floor_level))
         floor_level+=16
+
+def text(string, text_x, text_y, font_size):
+    font = pygame.font.Font("minecraft_font.ttf", font_size)
+    text = font.render(string, True, (255, 0, 0))
+    text_rect = text.get_rect()
+    text_rect.center = (text_x, text_y)
+    return(text, text_rect)
 
 
         
@@ -51,6 +57,7 @@ ground_y = 150
 floor_level = 0
 random_spawn_spike = random.randint(0, 2)
 spike_speed = random.randint(6, 12)
+death_text = text("YOU DIED", 500, 100, 50)
 
 
 back = (46, 46, 46)
@@ -68,7 +75,11 @@ while running:
     # gameDisplay.blit(mask_img, (100, 150))
 
     if character_mask.overlap(spike_mask, (spike_x - charater_x, spike_y - charater_y)): # subtract coordinates of the spike and the charater
-        print("dead")
+        gameDisplay.blit(death_text[0], death_text[1])
+        pygame.display.update()
+        pygame.time.delay(2000)
+        running = False
+        
         
     
     
@@ -76,9 +87,10 @@ while running:
     if spike_x < 0:
         spike_speed = random.randint(6, 12)
         spike_x = 1000
+
     
-    if 450 < spike_x < 462:
-        spike(1000, 140)
+    
+        
 
         
 
