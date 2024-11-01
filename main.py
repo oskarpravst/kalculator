@@ -58,6 +58,9 @@ floor_level = 0
 random_spawn_spike = random.randint(0, 2)
 spike_speed = random.randint(6, 12)
 death_text = text("YOU DIED", 500, 100, 50)
+score = 0
+score_text = text(str(score), 500, 100, 50)
+
 
 
 back = (46, 46, 46)
@@ -88,7 +91,10 @@ while running:
         spike_speed = random.randint(6, 12)
         spike_x = 1000
 
-    
+    if 50 < spike_x < 150:
+        score +=1
+        pygame.display.update()
+        
     
         
 
@@ -104,7 +110,6 @@ while running:
         if keys_pressed[pygame.K_SPACE]:
             jumping = True
             velocity = jump_strength  # Set the initial jump velocity
-    
     if jumping:
         charater_y -= velocity  # Move the character up
         velocity -= 1  # Decrease the velocity
@@ -114,7 +119,7 @@ while running:
             charater_y = ground_y  # Reset to ground level
             jumping = False  # Reset jumping state
             velocity = 0  # Reset velocity
-
+    gameDisplay.blit(score_text[0], score_text[1])
     pygame.display.update()
     clock.tick(60)
 
