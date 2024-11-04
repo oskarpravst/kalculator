@@ -88,15 +88,11 @@ while running:
     
     spike_x -= spike_speed
     if spike_x < 0:
-        spike_speed = random.randint(6, 12)
+        score += 1
+        score_text = text(str(score), 500, 100, 50)
+        spike_speed = random.randint(6, 16)
         spike_x = 1000
 
-    if 50 < spike_x < 150:
-        score +=1
-        pygame.display.update()
-        
-    
-        
 
         
 
@@ -110,15 +106,18 @@ while running:
         if keys_pressed[pygame.K_SPACE]:
             jumping = True
             velocity = jump_strength  # Set the initial jump velocity
+            
+            
     if jumping:
         charater_y -= velocity  # Move the character up
         velocity -= 1  # Decrease the velocity
 
         # If the character has fallen back to the ground
         if charater_y >= ground_y:
-            charater_y = ground_y  # Reset to ground level
+            charater_y = ground_y  # Reset to ground level  
             jumping = False  # Reset jumping state
             velocity = 0  # Reset velocity
+
     gameDisplay.blit(score_text[0], score_text[1])
     pygame.display.update()
     clock.tick(60)
