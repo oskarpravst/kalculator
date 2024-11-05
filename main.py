@@ -17,9 +17,20 @@ floor_img = pygame.image.load("tileplanks.png")
 def character(charater_x, charater_y):
     gameDisplay.blit(character_img, (charater_x, charater_y))
 
-def spike(spike_x, spike_y):
-    gameDisplay.blit(spike_img, (spike_x, spike_y))
-    gameDisplay.blit(spike_img, (spike_x+30, spike_y))
+def update_spikes(spike_x_list):
+    for i in range(len(spike_x_list)):
+        print(spike_x_list[i])
+        spike_x_list[i] -= 10
+        
+
+
+
+def spike(spike_x):
+    for i in range(len(spike_x)):
+        gameDisplay.blit(spike_img, (spike_x[i], 140))
+        gameDisplay.blit(spike_img, (spike_x[i]+30, 140))
+        # if spike_x_list[i] < 0:
+        #     del spike_x_list[i]
 
 
 def floor(floor_x, floor_y, floor_level):
@@ -49,8 +60,6 @@ spike_mask = pygame.mask.from_surface(spike_img)
 running = True
 charater_x = 100
 charater_y = 150
-spike_x = 1000
-spike_y = 140
 floor_y = 172
 floor_x = 0
 ground_y = 150
@@ -64,27 +73,35 @@ back = (46, 46, 46)
 jumping = False
 velocity = 0
 jump_strength = 10 # Set a fixed jump strength
+spike_x_list = []
+timer = 0
+sigma = 20
 
 while running:
+    
+    
+    if timer > sigma:
+        
+        spike_x_list.append(1000)
+        timer = 0
+        sigma = random.randint(18, 50)
+    update_spikes(spike_x_list)
+
     gameDisplay.fill(back)
     floor(floor_x, floor_y, floor_level)
     character(charater_x, charater_y)
     
-    spike(spike_x, spike_y)
+    spike(spike_x_list)
     # gameDisplay.blit(mask_img, (100, 150))
 
-    if character_mask.overlap(spike_mask, (spike_x - charater_x, spike_y - charater_y)): # subtract coordinates of the spike and the charater
-        gameDisplay.blit(death_text[0], death_text[1])
-        pygame.display.update()
-        pygame.time.delay(2000)
-        running = False
-        
-    spike_x -= spike_speed
-    if spike_x < 0:
-        score += 1
-        score_text = text(str(score), 500, 100, 50)
-        spike_speed = random.randint(6, 16)
-        spike_x = 1000
+    for i in range(len(spike_x_list)):
+        if character_mask.overlap(spike_mask, (spike_x_list[i] - charater_x, 140 - charater_y)): # subtract coordinates of the spike and the charater
+            gameDisplay.blit(death_text[0], death_text[1])
+            pygame.display.update()
+            pygame.time.delay(2000)
+            running = False
+    
+
         
 
     for event in pygame.event.get():
@@ -110,5 +127,8 @@ while running:
     gameDisplay.blit(score_text[0], score_text[1])
     pygame.display.update()
     clock.tick(60)
+    print(spike_x_list)
+    timer += 1
+    print(timer)
 
 pygame.quit()
