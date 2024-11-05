@@ -5,7 +5,7 @@ from pygame import *
 # SETUP
 pygame.init()
 gameDisplay = pygame.display.set_mode((1000, 300))
-pygame.display.set_caption('Kalculator')
+pygame.display.set_caption('Jump - Space')
 clock = pygame.time.Clock()
 
 # IMAGES
@@ -60,11 +60,7 @@ spike_speed = random.randint(6, 12)
 death_text = text("YOU DIED", 500, 100, 50)
 score = 0
 score_text = text(str(score), 500, 100, 50)
-
-
-
 back = (46, 46, 46)
-
 jumping = False
 velocity = 0
 jump_strength = 10 # Set a fixed jump strength
@@ -83,17 +79,12 @@ while running:
         pygame.time.delay(2000)
         running = False
         
-        
-    
-    
     spike_x -= spike_speed
     if spike_x < 0:
         score += 1
         score_text = text(str(score), 500, 100, 50)
         spike_speed = random.randint(6, 16)
         spike_x = 1000
-
-
         
 
     for event in pygame.event.get():
@@ -105,18 +96,16 @@ while running:
     if not jumping:
         if keys_pressed[pygame.K_SPACE]:
             jumping = True
-            velocity = jump_strength  # Set the initial jump velocity
-            
-            
+            velocity = jump_strength  
+     
     if jumping:
-        charater_y -= velocity  # Move the character up
-        velocity -= 1  # Decrease the velocity
-
-        # If the character has fallen back to the ground
+        charater_y -= velocity  
+        velocity -= 1 
+       
         if charater_y >= ground_y:
-            charater_y = ground_y  # Reset to ground level  
-            jumping = False  # Reset jumping state
-            velocity = 0  # Reset velocity
+            charater_y = ground_y  
+            jumping = False  
+            velocity = 0 
 
     gameDisplay.blit(score_text[0], score_text[1])
     pygame.display.update()
