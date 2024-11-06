@@ -2,6 +2,8 @@ import pygame
 import random
 from pygame import *
 
+font_main = "minecraft_font.ttf"
+
 # SETUP
 pygame.init()
 gameDisplay = pygame.display.set_mode((1000, 300))
@@ -29,6 +31,8 @@ def spike(spike_x):
     for i in range(len(spike_x)):
         gameDisplay.blit(spike_img, (spike_x[i], 140))
         gameDisplay.blit(spike_img, (spike_x[i]+30, 140))
+            
+
         # if spike_x_list[i] < 0:
         #     del spike_x_list[i]
 
@@ -40,7 +44,7 @@ def floor(floor_x, floor_y, floor_level):
         floor_level+=16
 
 def text(string, text_x, text_y, font_size):
-    font = pygame.font.Font("minecraft_font.ttf", font_size)
+    font = pygame.font.Font(font_main, font_size)
     text = font.render(string, True, (255, 0, 0))
     text_rect = text.get_rect()
     text_rect.center = (text_x, text_y)
@@ -72,10 +76,11 @@ score_text = text(str(score), 500, 100, 50)
 back = (46, 46, 46)
 jumping = False
 velocity = 0
-jump_strength = 10 # Set a fixed jump strength
+jump_strength = 8 # Set a fixed jump strength
 spike_x_list = []
 timer = 0
 sigma = 20
+
 
 while running:
     
@@ -92,6 +97,8 @@ while running:
     character(charater_x, charater_y)
     
     spike(spike_x_list)
+   
+    
     # gameDisplay.blit(mask_img, (100, 150))
 
     for i in range(len(spike_x_list)):
@@ -101,7 +108,11 @@ while running:
             pygame.time.delay(2000)
             running = False
     
-
+    for i in range(len(spike_x_list)):
+        if spike_x_list[i] == 0:
+            score += 1
+            score_text = text(str(score), 500, 100, 50)
+            
         
 
     for event in pygame.event.get():
