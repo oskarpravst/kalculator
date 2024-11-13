@@ -12,7 +12,10 @@ clock = pygame.time.Clock()
 
 # IMAGES
 character_img = pygame.image.load("nurek.png")
-spike_img = pygame.image.load("Spike_Pixel.png")
+spike_img = [pygame.image.load("rock1.png"),
+             pygame.image.load("rock2.png"),
+             pygame.image.load("rock3.png"),
+             pygame.image.load("rock4.png")]
 floor_img = pygame.image.load("tileplanks.png")
 
 # FUNCTIONS
@@ -29,10 +32,12 @@ def update_spikes(spike_x_list):
     spike_x_list = []
 
 
-def spike(spike_x):
+def spike(spike_x, j):
+    j = round(j)
     for i in range(len(spike_x)):
-        gameDisplay.blit(spike_img, (spike_x[i], 140))
-        gameDisplay.blit(spike_img, (spike_x[i]+30, 140))
+        gameDisplay.blit(spike_img[j], (spike_x[i], 140))
+        
+        
             
 
         # if spike_x_list[i] < 0:
@@ -59,37 +64,48 @@ def text(string, text_x, text_y, font_size):
 character_mask = pygame.mask.from_surface(character_img)
 mask_img = character_mask.to_surface()
 
-spike_mask = pygame.mask.from_surface(spike_img)
+spike_mask = pygame.mask.from_surface(spike_img[0])
 
 
 # VARIABLES
 running = True
-
-game = True
-charater_x = 100
-charater_y = 150
-floor_y = 172
-floor_x = 0
-ground_y = 150
-floor_level = 0
-random_spawn_spike = random.randint(0, 2)
-spike_speed = 10
-death_text = text("YOU DIED, TOTAL SCORE: ", 500, 100, 50)
-score = 0
-score_text = text(str(score), 500, 100, 50)
-back = (46, 46, 46)
-jumping = False
-velocity = 0 
-jump_strength = 8 # Set a fixed jump strength
-spike_x_list = []
-temp_list = []
-timer = 0
-sigma = 20
-
+game = False
+start_text = text("CLICK R TO RUN ", 500, 100, 50)
+gameDisplay.blit(start_text[0], start_text[1])
+pygame.display.update()
 
 while running:
-    while game:
+    animation = 0
     
+
+    
+    charater_x = 100
+    charater_y = 150
+    floor_y = 172
+    floor_x = 0
+    ground_y = 150
+    floor_level = 0
+    random_spawn_spike = random.randint(0, 2)
+    spike_speed = 10
+    death_text = text("YOU DIED, TOTAL SCORE: ", 500, 100, 50)
+    
+    score = 0
+    score_text = text(str(score), 500, 100, 50)
+    back = (46, 46, 46)
+    jumping = False
+    velocity = 0 
+    jump_strength = 8 # Set a fixed jump strength
+    spike_x_list = []
+    temp_list = []
+    timer = 0
+    sigma = 20
+    while game:
+        
+        animation += 0.25
+        if animation >= 3.5:
+            animation  = 0
+        
+        
     
         if timer > sigma:
             
@@ -107,7 +123,9 @@ while running:
         floor(floor_x, floor_y, floor_level)
         character(charater_x, charater_y)
         
-        spike(spike_x_list)
+        
+        # rock = spike_img[animation]
+        spike(spike_x_list, animation)
         if score == 10:
             spike_speed = 11
         if score == 20:
@@ -157,7 +175,7 @@ while running:
         pygame.display.update()
         clock.tick(60)
         timer += 1
-        print(spike_x_list)
+        
     
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -170,26 +188,6 @@ while running:
         
 
         game = True
-        charater_x = 100
-        charater_y = 150
-        floor_y = 172
-        floor_x = 0
-        ground_y = 150
-        floor_level = 0
-        random_spawn_spike = random.randint(0, 2)
-        spike_speed = 10
-        death_text = text("YOU DIED, TOTAL SCORE: ", 500, 100, 50)
-        score = 0
-        score_text = text(str(score), 500, 100, 50)
-        back = (46, 46, 46)
-        jumping = False
-        velocity = 0 
-        jump_strength = 8 # Set a fixed jump strength
-        spike_x_list = []
-        temp_list = []
-        timer = 0
-        sigma = 20
 
-        print("nigq")
     
 
